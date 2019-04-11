@@ -1,11 +1,10 @@
 name: "mxnet-model"
+
 input: "data"
-input_shape {
-  dim: 1
-  dim: 3
-  dim: 320
-  dim: 320
-}
+input_dim: 1
+input_dim: 3
+input_dim: 320
+input_dim: 320
 layer {
   name: "fpganet0_features_conv0_fwd_bscale"
   type: "Scale"
