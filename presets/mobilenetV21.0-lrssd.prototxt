@@ -32,7 +32,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_conv0_fwd_a0"
   top: "fpganet0_features_conv0_fwd"
   scale_param {
@@ -65,7 +65,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck0_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck0_conv0_fwd_a3"
   top: "fpganet0_features_linearbottleneck0_conv0_fwd"
   scale_param {
@@ -99,7 +99,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck0_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck0_conv1_fwd_a6"
   top: "fpganet0_features_linearbottleneck0_conv1_fwd"
   scale_param {
@@ -132,7 +132,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck0_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck0_conv2_fwd_a9"
   top: "fpganet0_features_linearbottleneck0_conv2_fwd"
   scale_param {
@@ -157,7 +157,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck1_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck1_conv0_fwd_a11"
   top: "fpganet0_features_linearbottleneck1_conv0_fwd"
   scale_param {
@@ -191,7 +191,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck1_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck1_conv1_fwd_a14"
   top: "fpganet0_features_linearbottleneck1_conv1_fwd"
   scale_param {
@@ -224,7 +224,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck1_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck1_conv2_fwd_a17"
   top: "fpganet0_features_linearbottleneck1_conv2_fwd"
   scale_param {
@@ -249,7 +249,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck2_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck2_conv0_fwd_a19"
   top: "fpganet0_features_linearbottleneck2_conv0_fwd"
   scale_param {
@@ -283,7 +283,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck2_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck2_conv1_fwd_a22"
   top: "fpganet0_features_linearbottleneck2_conv1_fwd"
   scale_param {
@@ -316,7 +316,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck2_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck2_conv2_fwd_a25"
   top: "fpganet0_features_linearbottleneck2_conv2_fwd"
   scale_param {
@@ -325,7 +325,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck2_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck1_conv2_fwd"
   top: "fpganet0_features_linearbottleneck2_batchnorm0_fwd"
   scale_param {
@@ -360,7 +360,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck3_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck3_conv0_fwd_a29"
   top: "fpganet0_features_linearbottleneck3_conv0_fwd"
   scale_param {
@@ -394,7 +394,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck3_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck3_conv1_fwd_a32"
   top: "fpganet0_features_linearbottleneck3_conv1_fwd"
   scale_param {
@@ -427,7 +427,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck3_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck3_conv2_fwd_a35"
   top: "fpganet0_features_linearbottleneck3_conv2_fwd"
   scale_param {
@@ -452,7 +452,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck4_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck4_conv0_fwd_a37"
   top: "fpganet0_features_linearbottleneck4_conv0_fwd"
   scale_param {
@@ -486,7 +486,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck4_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck4_conv1_fwd_a40"
   top: "fpganet0_features_linearbottleneck4_conv1_fwd"
   scale_param {
@@ -519,7 +519,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck4_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck4_conv2_fwd_a43"
   top: "fpganet0_features_linearbottleneck4_conv2_fwd"
   scale_param {
@@ -528,7 +528,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck4_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck3_conv2_fwd"
   top: "fpganet0_features_linearbottleneck4_batchnorm0_fwd"
   scale_param {
@@ -563,7 +563,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck5_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck5_conv0_fwd_a47"
   top: "fpganet0_features_linearbottleneck5_conv0_fwd"
   scale_param {
@@ -597,7 +597,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck5_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck5_conv1_fwd_a50"
   top: "fpganet0_features_linearbottleneck5_conv1_fwd"
   scale_param {
@@ -630,7 +630,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck5_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck5_conv2_fwd_a53"
   top: "fpganet0_features_linearbottleneck5_conv2_fwd"
   scale_param {
@@ -639,7 +639,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck5_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck4_elemwise_add0"
   top: "fpganet0_features_linearbottleneck5_batchnorm0_fwd"
   scale_param {
@@ -674,7 +674,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck6_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck6_conv0_fwd_a57"
   top: "fpganet0_features_linearbottleneck6_conv0_fwd"
   scale_param {
@@ -708,7 +708,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck6_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck6_conv1_fwd_a60"
   top: "fpganet0_features_linearbottleneck6_conv1_fwd"
   scale_param {
@@ -741,7 +741,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck6_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck6_conv2_fwd_a63"
   top: "fpganet0_features_linearbottleneck6_conv2_fwd"
   scale_param {
@@ -766,7 +766,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck7_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck7_conv0_fwd_a65"
   top: "fpganet0_features_linearbottleneck7_conv0_fwd"
   scale_param {
@@ -800,7 +800,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck7_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck7_conv1_fwd_a68"
   top: "fpganet0_features_linearbottleneck7_conv1_fwd"
   scale_param {
@@ -833,7 +833,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck7_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck7_conv2_fwd_a71"
   top: "fpganet0_features_linearbottleneck7_conv2_fwd"
   scale_param {
@@ -842,7 +842,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck7_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck6_conv2_fwd"
   top: "fpganet0_features_linearbottleneck7_batchnorm0_fwd"
   scale_param {
@@ -877,7 +877,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck8_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck8_conv0_fwd_a75"
   top: "fpganet0_features_linearbottleneck8_conv0_fwd"
   scale_param {
@@ -911,7 +911,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck8_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck8_conv1_fwd_a78"
   top: "fpganet0_features_linearbottleneck8_conv1_fwd"
   scale_param {
@@ -944,7 +944,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck8_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck8_conv2_fwd_a81"
   top: "fpganet0_features_linearbottleneck8_conv2_fwd"
   scale_param {
@@ -953,7 +953,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck8_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck7_elemwise_add0"
   top: "fpganet0_features_linearbottleneck8_batchnorm0_fwd"
   scale_param {
@@ -988,7 +988,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck9_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck9_conv0_fwd_a85"
   top: "fpganet0_features_linearbottleneck9_conv0_fwd"
   scale_param {
@@ -1022,7 +1022,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck9_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck9_conv1_fwd_a88"
   top: "fpganet0_features_linearbottleneck9_conv1_fwd"
   scale_param {
@@ -1055,7 +1055,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck9_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck9_conv2_fwd_a91"
   top: "fpganet0_features_linearbottleneck9_conv2_fwd"
   scale_param {
@@ -1064,7 +1064,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck9_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck8_elemwise_add0"
   top: "fpganet0_features_linearbottleneck9_batchnorm0_fwd"
   scale_param {
@@ -1099,7 +1099,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck10_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck10_conv0_fwd_a95"
   top: "fpganet0_features_linearbottleneck10_conv0_fwd"
   scale_param {
@@ -1133,7 +1133,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck10_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck10_conv1_fwd_a98"
   top: "fpganet0_features_linearbottleneck10_conv1_fwd"
   scale_param {
@@ -1166,7 +1166,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck10_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck10_conv2_fwd_a101"
   top: "fpganet0_features_linearbottleneck10_conv2_fwd"
   scale_param {
@@ -1175,7 +1175,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck10_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck9_elemwise_add0"
   top: "fpganet0_features_linearbottleneck10_batchnorm0_fwd"
   scale_param {
@@ -1210,7 +1210,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck11_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck11_conv0_fwd_a105"
   top: "fpganet0_features_linearbottleneck11_conv0_fwd"
   scale_param {
@@ -1244,7 +1244,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck11_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck11_conv1_fwd_a108"
   top: "fpganet0_features_linearbottleneck11_conv1_fwd"
   scale_param {
@@ -1277,7 +1277,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck11_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck11_conv2_fwd_a111"
   top: "fpganet0_features_linearbottleneck11_conv2_fwd"
   scale_param {
@@ -1286,7 +1286,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck11_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck10_elemwise_add0"
   top: "fpganet0_features_linearbottleneck11_batchnorm0_fwd"
   scale_param {
@@ -1321,7 +1321,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck12_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck12_conv0_fwd_a115"
   top: "fpganet0_features_linearbottleneck12_conv0_fwd"
   scale_param {
@@ -1355,7 +1355,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck12_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck12_conv1_fwd_a118"
   top: "fpganet0_features_linearbottleneck12_conv1_fwd"
   scale_param {
@@ -1388,7 +1388,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck12_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck12_conv2_fwd_a121"
   top: "fpganet0_features_linearbottleneck12_conv2_fwd"
   scale_param {
@@ -1397,7 +1397,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck12_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck11_elemwise_add0"
   top: "fpganet0_features_linearbottleneck12_batchnorm0_fwd"
   scale_param {
@@ -1432,7 +1432,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck13_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck13_conv0_fwd_a125"
   top: "fpganet0_features_linearbottleneck13_conv0_fwd"
   scale_param {
@@ -1465,7 +1465,7 @@ layer {
 }
 layer {
   name: "project0_conv_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "project0_conv_a128"
   top: "project0_conv"
   scale_param {
@@ -1491,7 +1491,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck13_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck13_conv1_fwd_a130"
   top: "fpganet0_features_linearbottleneck13_conv1_fwd"
   scale_param {
@@ -1524,7 +1524,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck13_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck13_conv2_fwd_a133"
   top: "fpganet0_features_linearbottleneck13_conv2_fwd"
   scale_param {
@@ -1549,7 +1549,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck14_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck14_conv0_fwd_a135"
   top: "fpganet0_features_linearbottleneck14_conv0_fwd"
   scale_param {
@@ -1583,7 +1583,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck14_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck14_conv1_fwd_a138"
   top: "fpganet0_features_linearbottleneck14_conv1_fwd"
   scale_param {
@@ -1616,7 +1616,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck14_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck14_conv2_fwd_a141"
   top: "fpganet0_features_linearbottleneck14_conv2_fwd"
   scale_param {
@@ -1625,7 +1625,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck14_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck13_conv2_fwd"
   top: "fpganet0_features_linearbottleneck14_batchnorm0_fwd"
   scale_param {
@@ -1660,7 +1660,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck15_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck15_conv0_fwd_a145"
   top: "fpganet0_features_linearbottleneck15_conv0_fwd"
   scale_param {
@@ -1694,7 +1694,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck15_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck15_conv1_fwd_a148"
   top: "fpganet0_features_linearbottleneck15_conv1_fwd"
   scale_param {
@@ -1727,7 +1727,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck15_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck15_conv2_fwd_a151"
   top: "fpganet0_features_linearbottleneck15_conv2_fwd"
   scale_param {
@@ -1736,7 +1736,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck15_batchnorm0_fwd"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck14_elemwise_add0"
   top: "fpganet0_features_linearbottleneck15_batchnorm0_fwd"
   scale_param {
@@ -1771,7 +1771,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck16_conv0_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck16_conv0_fwd_a155"
   top: "fpganet0_features_linearbottleneck16_conv0_fwd"
   scale_param {
@@ -1805,7 +1805,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck16_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck16_conv1_fwd_a158"
   top: "fpganet0_features_linearbottleneck16_conv1_fwd"
   scale_param {
@@ -1838,7 +1838,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_linearbottleneck16_conv2_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_linearbottleneck16_conv2_fwd_a161"
   top: "fpganet0_features_linearbottleneck16_conv2_fwd"
   scale_param {
@@ -1863,7 +1863,7 @@ layer {
 }
 layer {
   name: "fpganet0_features_conv1_fwd_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "fpganet0_features_conv1_fwd_a163"
   top: "fpganet0_features_conv1_fwd"
   scale_param {
@@ -1896,7 +1896,7 @@ layer {
 }
 layer {
   name: "project1_conv_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "project1_conv_a166"
   top: "project1_conv"
   scale_param {
@@ -1946,7 +1946,7 @@ layer {
 }
 layer {
   name: "extra_dw_conv_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "extra_dw_conv_a170"
   top: "extra_dw_conv"
   scale_param {
@@ -1979,7 +1979,7 @@ layer {
 }
 layer {
   name: "project2_conv_ascale"
-  type: "ScaleFPGA"
+  type: "Scale"
   bottom: "project2_conv_a173"
   top: "project2_conv"
   scale_param {

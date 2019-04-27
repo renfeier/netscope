@@ -1,2882 +1,466 @@
-name: "mxnet-model"
-
-input: "data"
-input_dim: 1
-input_dim: 3
-input_dim: 320
-input_dim: 320
-layer {
-  name: "fpganet0_features_conv0_fwd_bscale"
-  type: "Scale"
+name: "nin_imagenet"
+layers {
+  top: "data"
+  top: "label"
+  name: "data"
+  type: DATA
+  data_param {
+    source: "/home/linmin/IMAGENET-LMDB/imagenet-train-lmdb"
+    backend: LMDB
+    batch_size: 64
+  }
+  transform_param {
+    crop_size: 224
+    mirror: true
+    mean_file: "/home/linmin/IMAGENET-LMDB/imagenet-train-mean"
+  }
+  include: { phase: TRAIN }
+}
+layers {
+  top: "data"
+  top: "label"
+  name: "data"
+  type: DATA
+  data_param {
+    source: "/home/linmin/IMAGENET-LMDB/imagenet-val-lmdb"
+    backend: LMDB
+    batch_size: 89
+  }
+  transform_param {
+    crop_size: 224
+    mirror: false
+    mean_file: "/home/linmin/IMAGENET-LMDB/imagenet-train-mean"
+  }
+  include: { phase: TEST }
+}
+layers {
   bottom: "data"
-  top: "data_b0"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_conv0_fwd"
-  type: "Convolution"
-  bottom: "data_b0"
-  top: "fpganet0_features_conv0_fwd_a0"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 1
-    stride: 2
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_conv0_fwd_a0"
-  top: "fpganet0_features_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_conv0_fwd"
-  top: "fpganet0_features_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck0_conv0_fwd_a3"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck0_conv0_fwd_a3"
-  top: "fpganet0_features_linearbottleneck0_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck0_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck0_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck0_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck0_conv1_fwd_a6"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 32
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck0_conv1_fwd_a6"
-  top: "fpganet0_features_linearbottleneck0_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck0_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck0_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck0_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck0_conv2_fwd_a9"
-  convolution_param {
-    num_output: 16
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck0_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck0_conv2_fwd_a9"
-  top: "fpganet0_features_linearbottleneck0_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck1_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck0_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck1_conv0_fwd_a11"
+  top: "conv1"
+  name: "conv1"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
   convolution_param {
     num_output: 96
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
-layer {
-  name: "fpganet0_features_linearbottleneck1_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck1_conv0_fwd_a11"
-  top: "fpganet0_features_linearbottleneck1_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
+layers {
+  bottom: "conv1"
+  top: "conv1"
+  name: "relu0"
+  type: RELU
 }
-layer {
-  name: "fpganet0_features_linearbottleneck1_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck1_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck1_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck1_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck1_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck1_conv1_fwd_a14"
+layers {
+  bottom: "conv1"
+  top: "cccp1"
+  name: "cccp1"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
   convolution_param {
     num_output: 96
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 96
-    stride: 2
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck1_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck1_conv1_fwd_a14"
-  top: "fpganet0_features_linearbottleneck1_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck1_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck1_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck1_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck1_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck1_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck1_conv2_fwd_a17"
-  convolution_param {
-    num_output: 16
-    bias_term: false
-    pad: 0
     kernel_size: 1
-    group: 1
     stride: 1
-    paramq: 8
-    scale_in: 1.0
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
-layer {
-  name: "fpganet0_features_linearbottleneck1_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck1_conv2_fwd_a17"
-  top: "fpganet0_features_linearbottleneck1_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
+layers {
+  bottom: "cccp1"
+  top: "cccp1"
+  name: "relu1"
+  type: RELU
 }
-layer {
-  name: "fpganet0_features_linearbottleneck2_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck1_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck2_conv0_fwd_a19"
+layers {
+  bottom: "cccp1"
+  top: "cccp2"
+  name: "cccp2"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
   convolution_param {
     num_output: 96
-    bias_term: false
-    pad: 0
     kernel_size: 1
-    group: 1
     stride: 1
-    paramq: 8
-    scale_in: 1.0
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
 }
-layer {
-  name: "fpganet0_features_linearbottleneck2_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck2_conv0_fwd_a19"
-  top: "fpganet0_features_linearbottleneck2_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
+layers {
+  bottom: "cccp2"
+  top: "cccp2"
+  name: "relu2"
+  type: RELU
 }
-layer {
-  name: "fpganet0_features_linearbottleneck2_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck2_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck2_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck2_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck2_conv1_fwd_a22"
-  convolution_param {
-    num_output: 96
-    bias_term: false
-    pad: 1
+layers {
+  bottom: "cccp2"
+  top: "pool0"
+  name: "pool0"
+  type: POOLING
+  pooling_param {
+    pool: MAX
     kernel_size: 3
-    group: 96
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck2_conv1_fwd_a22"
-  top: "fpganet0_features_linearbottleneck2_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck2_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck2_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck2_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck2_conv2_fwd_a25"
-  convolution_param {
-    num_output: 16
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck2_conv2_fwd_a25"
-  top: "fpganet0_features_linearbottleneck2_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck1_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck2_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck2_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck2_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck2_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck2_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck2_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck3_conv0_fwd_a29"
-  convolution_param {
-    num_output: 96
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck3_conv0_fwd_a29"
-  top: "fpganet0_features_linearbottleneck3_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck3_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck3_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck3_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck3_conv1_fwd_a32"
-  convolution_param {
-    num_output: 96
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 96
     stride: 2
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
   }
 }
-layer {
-  name: "fpganet0_features_linearbottleneck3_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck3_conv1_fwd_a32"
-  top: "fpganet0_features_linearbottleneck3_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck3_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck3_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck3_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck3_conv2_fwd_a35"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck3_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck3_conv2_fwd_a35"
-  top: "fpganet0_features_linearbottleneck3_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck3_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck4_conv0_fwd_a37"
-  convolution_param {
-    num_output: 192
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck4_conv0_fwd_a37"
-  top: "fpganet0_features_linearbottleneck4_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck4_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck4_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck4_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck4_conv1_fwd_a40"
-  convolution_param {
-    num_output: 192
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 192
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck4_conv1_fwd_a40"
-  top: "fpganet0_features_linearbottleneck4_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck4_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck4_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck4_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck4_conv2_fwd_a43"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck4_conv2_fwd_a43"
-  top: "fpganet0_features_linearbottleneck4_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck3_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck4_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck4_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck4_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck4_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck4_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck4_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck5_conv0_fwd_a47"
-  convolution_param {
-    num_output: 192
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck5_conv0_fwd_a47"
-  top: "fpganet0_features_linearbottleneck5_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck5_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck5_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck5_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck5_conv1_fwd_a50"
-  convolution_param {
-    num_output: 192
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 192
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck5_conv1_fwd_a50"
-  top: "fpganet0_features_linearbottleneck5_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck5_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck5_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck5_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck5_conv2_fwd_a53"
-  convolution_param {
-    num_output: 32
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck5_conv2_fwd_a53"
-  top: "fpganet0_features_linearbottleneck5_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck4_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck5_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck5_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck5_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck5_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck5_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck5_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck6_conv0_fwd_a57"
-  convolution_param {
-    num_output: 192
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck6_conv0_fwd_a57"
-  top: "fpganet0_features_linearbottleneck6_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck6_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck6_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck6_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck6_conv1_fwd_a60"
-  convolution_param {
-    num_output: 192
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 192
-    stride: 2
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck6_conv1_fwd_a60"
-  top: "fpganet0_features_linearbottleneck6_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck6_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck6_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck6_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck6_conv2_fwd_a63"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck6_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck6_conv2_fwd_a63"
-  top: "fpganet0_features_linearbottleneck6_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck6_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck7_conv0_fwd_a65"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck7_conv0_fwd_a65"
-  top: "fpganet0_features_linearbottleneck7_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck7_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck7_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck7_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck7_conv1_fwd_a68"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck7_conv1_fwd_a68"
-  top: "fpganet0_features_linearbottleneck7_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck7_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck7_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck7_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck7_conv2_fwd_a71"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck7_conv2_fwd_a71"
-  top: "fpganet0_features_linearbottleneck7_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck6_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck7_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck7_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck7_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck7_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck7_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck7_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck8_conv0_fwd_a75"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck8_conv0_fwd_a75"
-  top: "fpganet0_features_linearbottleneck8_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck8_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck8_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck8_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck8_conv1_fwd_a78"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck8_conv1_fwd_a78"
-  top: "fpganet0_features_linearbottleneck8_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck8_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck8_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck8_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck8_conv2_fwd_a81"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck8_conv2_fwd_a81"
-  top: "fpganet0_features_linearbottleneck8_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck7_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck8_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck8_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck8_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck8_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck8_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck8_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck9_conv0_fwd_a85"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck9_conv0_fwd_a85"
-  top: "fpganet0_features_linearbottleneck9_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck9_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck9_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck9_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck9_conv1_fwd_a88"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck9_conv1_fwd_a88"
-  top: "fpganet0_features_linearbottleneck9_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck9_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck9_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck9_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck9_conv2_fwd_a91"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck9_conv2_fwd_a91"
-  top: "fpganet0_features_linearbottleneck9_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck8_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck9_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck9_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck9_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck9_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck9_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck9_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck10_conv0_fwd_a95"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck10_conv0_fwd_a95"
-  top: "fpganet0_features_linearbottleneck10_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck10_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck10_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck10_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck10_conv1_fwd_a98"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck10_conv1_fwd_a98"
-  top: "fpganet0_features_linearbottleneck10_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck10_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck10_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck10_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck10_conv2_fwd_a101"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck10_conv2_fwd_a101"
-  top: "fpganet0_features_linearbottleneck10_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck9_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck10_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck10_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck10_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck10_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck10_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck10_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck11_conv0_fwd_a105"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck11_conv0_fwd_a105"
-  top: "fpganet0_features_linearbottleneck11_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck11_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck11_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck11_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck11_conv1_fwd_a108"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck11_conv1_fwd_a108"
-  top: "fpganet0_features_linearbottleneck11_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck11_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck11_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck11_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck11_conv2_fwd_a111"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck11_conv2_fwd_a111"
-  top: "fpganet0_features_linearbottleneck11_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck10_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck11_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck11_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck11_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck11_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck11_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck11_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck12_conv0_fwd_a115"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck12_conv0_fwd_a115"
-  top: "fpganet0_features_linearbottleneck12_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck12_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck12_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck12_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck12_conv1_fwd_a118"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck12_conv1_fwd_a118"
-  top: "fpganet0_features_linearbottleneck12_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck12_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck12_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck12_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck12_conv2_fwd_a121"
-  convolution_param {
-    num_output: 80
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck12_conv2_fwd_a121"
-  top: "fpganet0_features_linearbottleneck12_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck11_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck12_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck12_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck12_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck12_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck12_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck12_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck13_conv0_fwd_a125"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck13_conv0_fwd_a125"
-  top: "fpganet0_features_linearbottleneck13_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck13_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck13_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "project0_conv"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck13_relu0_fwd"
-  top: "project0_conv_a128"
-  convolution_param {
-    num_output: 128
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "project0_conv_ascale"
-  type: "ScaleFPGA"
-  bottom: "project0_conv_a128"
-  top: "project0_conv"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck13_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck13_conv1_fwd_a130"
-  convolution_param {
-    num_output: 480
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 480
-    stride: 2
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck13_conv1_fwd_a130"
-  top: "fpganet0_features_linearbottleneck13_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck13_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck13_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck13_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck13_conv2_fwd_a133"
-  convolution_param {
-    num_output: 160
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck13_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck13_conv2_fwd_a133"
-  top: "fpganet0_features_linearbottleneck13_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck13_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck14_conv0_fwd_a135"
-  convolution_param {
-    num_output: 960
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck14_conv0_fwd_a135"
-  top: "fpganet0_features_linearbottleneck14_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck14_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck14_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck14_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck14_conv1_fwd_a138"
-  convolution_param {
-    num_output: 960
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 960
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck14_conv1_fwd_a138"
-  top: "fpganet0_features_linearbottleneck14_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck14_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck14_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck14_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck14_conv2_fwd_a141"
-  convolution_param {
-    num_output: 160
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck14_conv2_fwd_a141"
-  top: "fpganet0_features_linearbottleneck14_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck13_conv2_fwd"
-  top: "fpganet0_features_linearbottleneck14_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck14_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck14_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck14_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck14_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck14_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck15_conv0_fwd_a145"
-  convolution_param {
-    num_output: 960
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck15_conv0_fwd_a145"
-  top: "fpganet0_features_linearbottleneck15_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck15_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck15_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck15_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck15_conv1_fwd_a148"
-  convolution_param {
-    num_output: 960
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 960
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck15_conv1_fwd_a148"
-  top: "fpganet0_features_linearbottleneck15_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck15_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck15_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck15_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck15_conv2_fwd_a151"
-  convolution_param {
-    num_output: 160
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck15_conv2_fwd_a151"
-  top: "fpganet0_features_linearbottleneck15_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_batchnorm0_fwd"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck14_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck15_batchnorm0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck15_elemwise_add0"
-  type: "Eltwise"
-  bottom: "fpganet0_features_linearbottleneck15_conv2_fwd"
-  bottom: "fpganet0_features_linearbottleneck15_batchnorm0_fwd"
-  top: "fpganet0_features_linearbottleneck15_elemwise_add0"
-  eltwise_param {
-    operation: SUM
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_conv0_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck15_elemwise_add0"
-  top: "fpganet0_features_linearbottleneck16_conv0_fwd_a155"
-  convolution_param {
-    num_output: 960
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_conv0_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck16_conv0_fwd_a155"
-  top: "fpganet0_features_linearbottleneck16_conv0_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_relu0_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck16_conv0_fwd"
-  top: "fpganet0_features_linearbottleneck16_relu0_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck16_relu0_fwd"
-  top: "fpganet0_features_linearbottleneck16_conv1_fwd_a158"
-  convolution_param {
-    num_output: 960
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 960
-    stride: 1
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck16_conv1_fwd_a158"
-  top: "fpganet0_features_linearbottleneck16_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_linearbottleneck16_conv1_fwd"
-  top: "fpganet0_features_linearbottleneck16_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_conv2_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck16_relu1_fwd"
-  top: "fpganet0_features_linearbottleneck16_conv2_fwd_a161"
-  convolution_param {
-    num_output: 320
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_linearbottleneck16_conv2_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_linearbottleneck16_conv2_fwd_a161"
-  top: "fpganet0_features_linearbottleneck16_conv2_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_conv1_fwd"
-  type: "Convolution"
-  bottom: "fpganet0_features_linearbottleneck16_conv2_fwd"
-  top: "fpganet0_features_conv1_fwd_a163"
-  convolution_param {
-    num_output: 1280
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fpganet0_features_conv1_fwd_ascale"
-  type: "ScaleFPGA"
-  bottom: "fpganet0_features_conv1_fwd_a163"
-  top: "fpganet0_features_conv1_fwd"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "fpganet0_features_relu1_fwd"
-  type: "ReLU"
-  bottom: "fpganet0_features_conv1_fwd"
-  top: "fpganet0_features_relu1_fwd"
-  relu_param {
-  }
-}
-layer {
-  name: "project1_conv"
-  type: "Convolution"
-  bottom: "fpganet0_features_relu1_fwd"
-  top: "project1_conv_a166"
-  convolution_param {
-    num_output: 128
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "project1_conv_ascale"
-  type: "ScaleFPGA"
-  bottom: "project1_conv_a166"
-  top: "project1_conv"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "bilinearresize2d0"
-  type: "BilinearUpsampleQuant"
-  bottom: "project1_conv"
-  top: "bilinearresize2d0"
-  bilinear_upsample_quant_param {
-    right_shift_bits: 21
-    bit_width: 8
-    fixpoint_bits: 23
-    alpha_int: 2070021
-    multiplier_right_shift_bits: 16
-    up_scale: 2
-  }
-}
-layer {
-  name: "project_concat1"
-  type: "Concat"
-  bottom: "project0_conv"
-  bottom: "bilinearresize2d0"
-  top: "project_concat1"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "extra_dw_conv"
-  type: "Convolution"
-  bottom: "fpganet0_features_relu1_fwd"
-  top: "extra_dw_conv_a170"
-  convolution_param {
-    num_output: 1280
-    bias_term: false
-    pad: 1
-    kernel_size: 3
-    group: 1280
-    stride: 2
-    engine: CAFFE
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "extra_dw_conv_ascale"
-  type: "ScaleFPGA"
-  bottom: "extra_dw_conv_a170"
-  top: "extra_dw_conv"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "extra_project_relu"
-  type: "ReLU"
-  bottom: "extra_dw_conv"
-  top: "extra_project_relu"
-  relu_param {
-  }
-}
-layer {
-  name: "project2_conv"
-  type: "Convolution"
-  bottom: "extra_project_relu"
-  top: "project2_conv_a173"
-  convolution_param {
-    num_output: 128
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "project2_conv_ascale"
-  type: "ScaleFPGA"
-  bottom: "project2_conv_a173"
-  top: "project2_conv"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "bilinearresize2d1"
-  type: "BilinearUpsampleQuant"
-  bottom: "project2_conv"
-  top: "bilinearresize2d1"
-  bilinear_upsample_quant_param {
-    right_shift_bits: 21
-    bit_width: 8
-    fixpoint_bits: 23
-    alpha_int: 2123945
-    multiplier_right_shift_bits: 16
-    up_scale: 4
-  }
-}
-layer {
-  name: "project_concat2"
-  type: "Concat"
-  bottom: "project_concat1"
-  bottom: "bilinearresize2d1"
-  top: "project_concat2"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "concat_relu"
-  type: "ReLU"
-  bottom: "project_concat2"
-  top: "concat_relu"
-  relu_param {
-  }
-}
-layer {
-  name: "fused_project_conv"
-  type: "Convolution"
-  bottom: "concat_relu"
-  top: "fused_project_conv_a178"
+layers {
+  bottom: "pool0"
+  top: "conv2"
+  name: "conv2"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
   convolution_param {
     num_output: 256
-    bias_term: false
-    pad: 0
-    kernel_size: 1
-    group: 1
+    pad: 2
+    kernel_size: 5
     stride: 1
-    paramq: 8
-    scale_in: 1.0
-  }
-}
-layer {
-  name: "fused_project_conv_ascale"
-  type: "Scale"
-  bottom: "fused_project_conv_a178"
-  top: "fused_project_conv"
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "convpredictor0_conv0_fwd_0shared"
-  type: "Convolution"
-  bottom: "fused_project_conv"
-  top: "convpredictor0_conv0_fwd_0shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose0"
-  type: "Permute"
-  bottom: "convpredictor0_conv0_fwd_0shared"
-  top: "hybridsequential7_transpose0"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten0"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose0"
-  top: "hybridsequential7_flatten0"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "fused_pooling1"
-  type: "Pooling"
-  bottom: "fused_project_conv"
-  top: "fused_pooling1"
-  pooling_param {
-    pool: MAX
-    kernel_size: 2
-    stride: 2
-    pad: 0
-  }
-}
-layer {
-  name: "convpredictor0_conv0_fwd_1shared"
-  type: "Convolution"
-  bottom: "fused_pooling1"
-  top: "convpredictor0_conv0_fwd_1shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose1"
-  type: "Permute"
-  bottom: "convpredictor0_conv0_fwd_1shared"
-  top: "hybridsequential7_transpose1"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten1"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose1"
-  top: "hybridsequential7_flatten1"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "fused_pooling2"
-  type: "Pooling"
-  bottom: "fused_pooling1"
-  top: "fused_pooling2"
-  pooling_param {
-    pool: MAX
-    kernel_size: 2
-    stride: 2
-    pad: 0
-  }
-}
-layer {
-  name: "convpredictor0_conv0_fwd_2shared"
-  type: "Convolution"
-  bottom: "fused_pooling2"
-  top: "convpredictor0_conv0_fwd_2shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose2"
-  type: "Permute"
-  bottom: "convpredictor0_conv0_fwd_2shared"
-  top: "hybridsequential7_transpose2"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten2"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose2"
-  top: "hybridsequential7_flatten2"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "fused_pooling3"
-  type: "Pooling"
-  bottom: "fused_pooling2"
-  top: "fused_pooling3"
-  pooling_param {
-    pool: MAX
-    kernel_size: 2
-    stride: 2
-    pad: 0
-  }
-}
-layer {
-  name: "convpredictor0_conv0_fwd_3shared"
-  type: "Convolution"
-  bottom: "fused_pooling3"
-  top: "convpredictor0_conv0_fwd_3shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose3"
-  type: "Permute"
-  bottom: "convpredictor0_conv0_fwd_3shared"
-  top: "hybridsequential7_transpose3"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten3"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose3"
-  top: "hybridsequential7_flatten3"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_concat0"
-  type: "Concat"
-  bottom: "hybridsequential7_flatten0"
-  bottom: "hybridsequential7_flatten1"
-  bottom: "hybridsequential7_flatten2"
-  bottom: "hybridsequential7_flatten3"
-  top: "hybridsequential7_concat0"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_reshape4"
-  type: "Reshape"
-  bottom: "hybridsequential7_concat0"
-  top: "hybridsequential7_reshape4"
-  reshape_param {
-    shape {
-      dim: 0
-      dim: -1
-      dim: 2
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
     }
   }
 }
-layer {
-  name: "hybridsequential7_softmax0"
-  type: "Softmax"
-  bottom: "hybridsequential7_reshape4"
-  top: "hybridsequential7_softmax0"
-  softmax_param {
-    axis: -1
-  }
+layers {
+  bottom: "conv2"
+  top: "conv2"
+  name: "relu3"
+  type: RELU
 }
-layer {
-  name: "convpredictor1_conv0_fwd_0shared"
-  type: "Convolution"
-  bottom: "fused_project_conv"
-  top: "convpredictor1_conv0_fwd_0shared"
+layers {
+  bottom: "conv2"
+  top: "cccp3"
+  name: "cccp3"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
   convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
+    num_output: 256
     kernel_size: 1
-    group: 1
     stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose4"
-  type: "Permute"
-  bottom: "convpredictor1_conv0_fwd_0shared"
-  top: "hybridsequential7_transpose4"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten4"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose4"
-  top: "hybridsequential7_flatten4"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor1_conv0_fwd_1shared"
-  type: "Convolution"
-  bottom: "fused_pooling1"
-  top: "convpredictor1_conv0_fwd_1shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose5"
-  type: "Permute"
-  bottom: "convpredictor1_conv0_fwd_1shared"
-  top: "hybridsequential7_transpose5"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten5"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose5"
-  top: "hybridsequential7_flatten5"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor1_conv0_fwd_2shared"
-  type: "Convolution"
-  bottom: "fused_pooling2"
-  top: "convpredictor1_conv0_fwd_2shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose6"
-  type: "Permute"
-  bottom: "convpredictor1_conv0_fwd_2shared"
-  top: "hybridsequential7_transpose6"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten6"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose6"
-  top: "hybridsequential7_flatten6"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor1_conv0_fwd_3shared"
-  type: "Convolution"
-  bottom: "fused_pooling3"
-  top: "convpredictor1_conv0_fwd_3shared"
-  convolution_param {
-    num_output: 8
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose7"
-  type: "Permute"
-  bottom: "convpredictor1_conv0_fwd_3shared"
-  top: "hybridsequential7_transpose7"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten7"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose7"
-  top: "hybridsequential7_flatten7"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_concat1"
-  type: "Concat"
-  bottom: "hybridsequential7_flatten4"
-  bottom: "hybridsequential7_flatten5"
-  bottom: "hybridsequential7_flatten6"
-  bottom: "hybridsequential7_flatten7"
-  top: "hybridsequential7_concat1"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_reshape5"
-  type: "Reshape"
-  bottom: "hybridsequential7_concat1"
-  top: "hybridsequential7_reshape5"
-  reshape_param {
-    shape {
-      dim: 0
-      dim: -1
-      dim: 2
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
     }
   }
 }
-layer {
-  name: "hybridsequential7_softmax1"
-  type: "Softmax"
-  bottom: "hybridsequential7_reshape5"
-  top: "hybridsequential7_softmax1"
-  softmax_param {
-    axis: -1
-  }
+layers {
+  bottom: "cccp3"
+  top: "cccp3"
+  name: "relu5"
+  type: RELU
 }
-layer {
-  name: "convpredictor3_conv0_fwd_0shared"
-  type: "Convolution"
-  bottom: "fused_project_conv"
-  top: "convpredictor3_conv0_fwd_0shared"
+layers {
+  bottom: "cccp3"
+  top: "cccp4"
+  name: "cccp4"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
   convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
+    num_output: 256
     kernel_size: 1
-    group: 1
     stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose12"
-  type: "Permute"
-  bottom: "convpredictor3_conv0_fwd_0shared"
-  top: "hybridsequential7_transpose12"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten12"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose12"
-  top: "hybridsequential7_flatten12"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor3_conv0_fwd_1shared"
-  type: "Convolution"
-  bottom: "fused_pooling1"
-  top: "convpredictor3_conv0_fwd_1shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose13"
-  type: "Permute"
-  bottom: "convpredictor3_conv0_fwd_1shared"
-  top: "hybridsequential7_transpose13"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten13"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose13"
-  top: "hybridsequential7_flatten13"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor3_conv0_fwd_2shared"
-  type: "Convolution"
-  bottom: "fused_pooling2"
-  top: "convpredictor3_conv0_fwd_2shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose14"
-  type: "Permute"
-  bottom: "convpredictor3_conv0_fwd_2shared"
-  top: "hybridsequential7_transpose14"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten14"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose14"
-  top: "hybridsequential7_flatten14"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor3_conv0_fwd_3shared"
-  type: "Convolution"
-  bottom: "fused_pooling3"
-  top: "convpredictor3_conv0_fwd_3shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose15"
-  type: "Permute"
-  bottom: "convpredictor3_conv0_fwd_3shared"
-  top: "hybridsequential7_transpose15"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten15"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose15"
-  top: "hybridsequential7_flatten15"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_concat3"
-  type: "Concat"
-  bottom: "hybridsequential7_flatten12"
-  bottom: "hybridsequential7_flatten13"
-  bottom: "hybridsequential7_flatten14"
-  bottom: "hybridsequential7_flatten15"
-  top: "hybridsequential7_concat3"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor2_conv0_fwd_0shared"
-  type: "Convolution"
-  bottom: "fused_project_conv"
-  top: "convpredictor2_conv0_fwd_0shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose8"
-  type: "Permute"
-  bottom: "convpredictor2_conv0_fwd_0shared"
-  top: "hybridsequential7_transpose8"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten8"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose8"
-  top: "hybridsequential7_flatten8"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor2_conv0_fwd_1shared"
-  type: "Convolution"
-  bottom: "fused_pooling1"
-  top: "convpredictor2_conv0_fwd_1shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose9"
-  type: "Permute"
-  bottom: "convpredictor2_conv0_fwd_1shared"
-  top: "hybridsequential7_transpose9"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten9"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose9"
-  top: "hybridsequential7_flatten9"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor2_conv0_fwd_2shared"
-  type: "Convolution"
-  bottom: "fused_pooling2"
-  top: "convpredictor2_conv0_fwd_2shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose10"
-  type: "Permute"
-  bottom: "convpredictor2_conv0_fwd_2shared"
-  top: "hybridsequential7_transpose10"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten10"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose10"
-  top: "hybridsequential7_flatten10"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "convpredictor2_conv0_fwd_3shared"
-  type: "Convolution"
-  bottom: "fused_pooling3"
-  top: "convpredictor2_conv0_fwd_3shared"
-  convolution_param {
-    num_output: 16
-    bias_term: true
-    pad: 0
-    kernel_size: 1
-    group: 1
-    stride: 1
-    paramq: 8
-  }
-}
-layer {
-  name: "hybridsequential7_transpose11"
-  type: "Permute"
-  bottom: "convpredictor2_conv0_fwd_3shared"
-  top: "hybridsequential7_transpose11"
-  permute_param {
-    order: 0
-    order: 2
-    order: 3
-    order: 1
-  }
-}
-layer {
-  name: "hybridsequential7_flatten11"
-  type: "Flatten"
-  bottom: "hybridsequential7_transpose11"
-  top: "hybridsequential7_flatten11"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_concat2"
-  type: "Concat"
-  bottom: "hybridsequential7_flatten8"
-  bottom: "hybridsequential7_flatten9"
-  bottom: "hybridsequential7_flatten10"
-  bottom: "hybridsequential7_flatten11"
-  top: "hybridsequential7_concat2"
-  concat_param {
-    axis: 1
-  }
-}
-layer {
-  name: "fused_project_conv_bn_priorbox0"
-  type: "PriorBox"
-  bottom: "fused_project_conv"
-  bottom: "data"
-  top: "fused_project_conv_bn_priorbox0"
-  prior_box_param {
-    min_size: 32.0
-    max_size: 64.0
-    aspect_ratio: 2.0
-    aspect_ratio: 0.5
-    flip: false
-    clip: false
-    variance: 0.10000000149
-    variance: 0.10000000149
-    variance: 0.20000000298
-    variance: 0.20000000298
-    offset: 0.5
-  }
-}
-layer {
-  name: "fused_pooling1_priorbox1"
-  type: "PriorBox"
-  bottom: "fused_pooling1"
-  bottom: "data"
-  top: "fused_pooling1_priorbox1"
-  prior_box_param {
-    min_size: 64.0
-    max_size: 128.0
-    aspect_ratio: 2.0
-    aspect_ratio: 0.5
-    flip: false
-    clip: false
-    variance: 0.10000000149
-    variance: 0.10000000149
-    variance: 0.20000000298
-    variance: 0.20000000298
-    offset: 0.5
-  }
-}
-layer {
-  name: "fused_pooling2_priorbox2"
-  type: "PriorBox"
-  bottom: "fused_pooling2"
-  bottom: "data"
-  top: "fused_pooling2_priorbox2"
-  prior_box_param {
-    min_size: 128.0
-    max_size: 256.0
-    aspect_ratio: 2.0
-    aspect_ratio: 0.5
-    flip: false
-    clip: false
-    variance: 0.10000000149
-    variance: 0.10000000149
-    variance: 0.20000000298
-    variance: 0.20000000298
-    offset: 0.5
-  }
-}
-layer {
-  name: "fused_pooling3_priorbox3"
-  type: "PriorBox"
-  bottom: "fused_pooling3"
-  bottom: "data"
-  top: "fused_pooling3_priorbox3"
-  prior_box_param {
-    min_size: 256.0
-    max_size: 315.0
-    aspect_ratio: 2.0
-    aspect_ratio: 0.5
-    flip: false
-    clip: false
-    variance: 0.10000000149
-    variance: 0.10000000149
-    variance: 0.20000000298
-    variance: 0.20000000298
-    offset: 0.5
-  }
-}
-layer {
-  name: "mbox_priorbox"
-  type: "Concat"
-  bottom: "fused_project_conv_bn_priorbox0"
-  bottom: "fused_pooling1_priorbox1"
-  bottom: "fused_pooling2_priorbox2"
-  bottom: "fused_pooling3_priorbox3"
-  top: "mbox_priorbox"
-  concat_param {
-    axis: 2
-  }
-}
-layer {
-  name: "hybridsequential7_softmax0_flatten"
-  type: "Flatten"
-  bottom: "hybridsequential7_softmax0"
-  top: "hybridsequential7_softmax0_flatten"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "hybridsequential7_softmax1_flatten"
-  type: "Flatten"
-  bottom: "hybridsequential7_softmax1"
-  top: "hybridsequential7_softmax1_flatten"
-  flatten_param {
-    axis: 1
-  }
-}
-layer {
-  name: "detection_out"
-  type: "DetectionOutput"
-  bottom: "hybridsequential7_concat3"
-  bottom: "hybridsequential7_softmax1_flatten"
-  bottom: "mbox_priorbox"
-  bottom: "hybridsequential7_softmax0_flatten"
-  bottom: "hybridsequential7_concat2"
-  top: "detection_out"
-  detection_output_param {
-    num_classes: 2
-    share_location: true
-    background_label_id: 0
-    nms_param {
-      nms_threshold: 0.45
-      top_k: 400
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
     }
-    code_type: CENTER_SIZE
-    keep_top_k: 100
-    confidence_threshold: 0.01
-    objectness_score: 0.01
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
   }
+}
+layers {
+  bottom: "cccp4"
+  top: "cccp4"
+  name: "relu6"
+  type: RELU
+}
+layers {
+  bottom: "cccp4"
+  top: "pool2"
+  name: "pool2"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool2"
+  top: "conv3"
+  name: "conv3"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "conv3"
+  top: "conv3"
+  name: "relu7"
+  type: RELU
+}
+layers {
+  bottom: "conv3"
+  top: "cccp5"
+  name: "cccp5"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "cccp5"
+  top: "cccp5"
+  name: "relu8"
+  type: RELU
+}
+layers {
+  bottom: "cccp5"
+  top: "cccp6"
+  name: "cccp6"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 384
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "cccp6"
+  top: "cccp6"
+  name: "relu9"
+  type: RELU
+}
+layers {
+  bottom: "cccp6"
+  top: "pool3"
+  name: "pool3"
+  type: POOLING
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layers {
+  bottom: "pool3"
+  top: "pool3"
+  name: "drop"
+  type: DROPOUT
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layers {
+  bottom: "pool3"
+  top: "conv4-1024"
+  name: "conv4-1024"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 1024
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "conv4-1024"
+  top: "conv4-1024"
+  name: "relu10"
+  type: RELU
+}
+layers {
+  bottom: "conv4-1024"
+  top: "cccp7-1024"
+  name: "cccp7-1024"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 1024
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.05
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "cccp7-1024"
+  top: "cccp7-1024"
+  name: "relu11"
+  type: RELU
+}
+layers {
+  bottom: "cccp7-1024"
+  top: "cccp8-1024"
+  name: "cccp8-1024"
+  type: CONVOLUTION
+  blobs_lr: 1
+  blobs_lr: 2
+  weight_decay: 1
+  weight_decay: 0
+  convolution_param {
+    num_output: 1000
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      mean: 0
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layers {
+  bottom: "cccp8-1024"
+  top: "cccp8-1024"
+  name: "relu12"
+  type: RELU
+}
+layers {
+  bottom: "cccp8-1024"
+  top: "pool4"
+  name: "pool4"
+  type: POOLING
+  pooling_param {
+    pool: AVE
+    kernel_size: 6
+    stride: 1
+  }
+}
+layers {
+  name: "accuracy"
+  type: ACCURACY
+  bottom: "pool4"
+  bottom: "label"
+  top: "accuracy"
+  include: { phase: TEST }
+}
+layers {
+  bottom: "pool4"
+  bottom: "label"
+  name: "loss"
+  type: SOFTMAX_LOSS
+  include: { phase: TRAIN }
 }
