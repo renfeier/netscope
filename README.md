@@ -22,6 +22,8 @@ Netscope is a web-based tool for visualizing neural network topologies. It curre
 
 ### Demo
 - [Visualization of ResNet-50](http://renfeier.github.io/netscope/#/preset/resnet-50)
+- [Visualization of squeezenet](http://renfeier.github.io/netscope/#/preset/squeezenet)
+- [Visualization of VGG_VOC0712_SSD](http://renfeier.github.io/netscope/#/preset/SSD300)
 - [Visualization of vgg-fasterRCNN](https://renfeier.github.io//netscope/#/preset/fasterRCNN_VGG)
 - [Visualization of mobilenet-lrssd](http://renfeier.github.io/netscope/#/preset/mobilenetV21.0-lrssd)
 
