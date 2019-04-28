@@ -394,7 +394,6 @@ layer {
       type: "constant"
       value: 0
     }
-    dilation: 1
   }
 }
 layer {
@@ -427,7 +426,6 @@ layer {
       type: "constant"
       value: 0
     }
-    dilation: 1
   }
 }
 layer {
@@ -460,7 +458,6 @@ layer {
       type: "constant"
       value: 0
     }
-    dilation: 1
   }
 }
 layer {
@@ -926,8 +923,8 @@ layer {
   bottom: "data"
   top: "conv4_3_norm_mbox_priorbox"
   prior_box_param {
-    min_size: 30.0
-    max_size: 60.0
+    min_size: 21.0
+    max_size: 45.0
     aspect_ratio: 2
     flip: true
     clip: false
@@ -936,7 +933,6 @@ layer {
     variance: 0.2
     variance: 0.2
     step: 8
-    offset: 0.5
   }
 }
 layer {
@@ -1042,8 +1038,8 @@ layer {
   bottom: "data"
   top: "fc7_mbox_priorbox"
   prior_box_param {
-    min_size: 60.0
-    max_size: 111.0
+    min_size: 45.0
+    max_size: 99.0
     aspect_ratio: 2
     aspect_ratio: 3
     flip: true
@@ -1053,7 +1049,6 @@ layer {
     variance: 0.2
     variance: 0.2
     step: 16
-    offset: 0.5
   }
 }
 layer {
@@ -1159,8 +1154,8 @@ layer {
   bottom: "data"
   top: "conv6_2_mbox_priorbox"
   prior_box_param {
-    min_size: 111.0
-    max_size: 162.0
+    min_size: 99.0
+    max_size: 153.0
     aspect_ratio: 2
     aspect_ratio: 3
     flip: true
@@ -1170,7 +1165,6 @@ layer {
     variance: 0.2
     variance: 0.2
     step: 32
-    offset: 0.5
   }
 }
 layer {
@@ -1276,8 +1270,8 @@ layer {
   bottom: "data"
   top: "conv7_2_mbox_priorbox"
   prior_box_param {
-    min_size: 162.0
-    max_size: 213.0
+    min_size: 153.0
+    max_size: 207.0
     aspect_ratio: 2
     aspect_ratio: 3
     flip: true
@@ -1287,7 +1281,6 @@ layer {
     variance: 0.2
     variance: 0.2
     step: 64
-    offset: 0.5
   }
 }
 layer {
@@ -1393,8 +1386,8 @@ layer {
   bottom: "data"
   top: "conv8_2_mbox_priorbox"
   prior_box_param {
-    min_size: 213.0
-    max_size: 264.0
+    min_size: 207.0
+    max_size: 261.0
     aspect_ratio: 2
     flip: true
     clip: false
@@ -1403,7 +1396,6 @@ layer {
     variance: 0.2
     variance: 0.2
     step: 100
-    offset: 0.5
   }
 }
 layer {
@@ -1509,7 +1501,7 @@ layer {
   bottom: "data"
   top: "conv9_2_mbox_priorbox"
   prior_box_param {
-    min_size: 264.0
+    min_size: 261.0
     max_size: 315.0
     aspect_ratio: 2
     flip: true
@@ -1519,7 +1511,6 @@ layer {
     variance: 0.2
     variance: 0.2
     step: 300
-    offset: 0.5
   }
 }
 layer {
@@ -1614,16 +1605,9 @@ layer {
       top_k: 400
     }
     save_output_param {
-      output_directory: "/home-2/wliu/data/VOCdevkit/results/VOC2007/SSD_300x300/Main"
-      output_name_prefix: "comp4_det_test_"
-      output_format: "VOC"
-      label_map_file: "data/VOC0712/labelmap_voc.prototxt"
-      name_size_file: "data/VOC0712/test_name_size.txt"
-      num_test_image: 4952
+      label_map_file: "data/VOC0712Plus/labelmap_voc.prototxt"
     }
     code_type: CENTER_SIZE
     keep_top_k: 200
-    confidence_threshold: 0.01
   }
 }
-
