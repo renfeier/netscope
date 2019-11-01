@@ -31,7 +31,7 @@ Netscope is a web-based tool for visualizing neural network topologies. It curre
 - [Visualization of MobilenetV1_SSD](http://renfeier.github.io/netscope/#/preset/mobilenetV1-ssd300-deploy)
 - [Visualization of vgg-fasterRCNN](https://renfeier.github.io//netscope/#/preset/fasterRCNN_VGG)
 - [Visualization of mobilenet-lrssd](http://renfeier.github.io/netscope/#/preset/mobilenetV21.0-lrssd)
-- [Visualization of mobilenet-lrssd](http://renfeier.github.io/netscope/#/preset/yoloV3_deploy)
+- [Visualization of yolov3](http://renfeier.github.io/netscope/#/preset/yoloV3_deploy)
 
 ### License
 
